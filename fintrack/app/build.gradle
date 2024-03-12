@@ -22,11 +22,17 @@ dependencies {
 
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
+    runtimeOnly(
+            libs.hibernate.jpamodelgen
+    )
+
     // This dependency is used by the application.
     implementation(
             libs.guava,
             libs.log4j.core,
             libs.log4j.api,
+            libs.hibernate.core,
+            libs.hibernate.hikariCP,
             'com.h2database:h2:2.2.224',
             'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.15.2'
     )
