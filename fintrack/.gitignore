@@ -8,4 +8,4 @@ build
 .idea
 
 # Ignore development logs
-src/**/logs
+app/**/logs
