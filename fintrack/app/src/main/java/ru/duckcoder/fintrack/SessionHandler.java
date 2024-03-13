@@ -5,7 +5,10 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import ru.duckcoder.fintrack.model.User;
+import ru.duckcoder.fintrack.model.Account;
+import ru.duckcoder.fintrack.model.Company;
+import ru.duckcoder.fintrack.model.Individual;
+import ru.duckcoder.fintrack.model.Person;
 
 @Log4j2
 public class SessionHandler {
@@ -20,7 +23,11 @@ public class SessionHandler {
                     final StandardServiceRegistry registry = new StandardServiceRegistryBuilder().build();
                     try {
                         sessionFactory = localFactory = new MetadataSources(registry)
-                                .addAnnotatedClasses(User.class)
+                                .addAnnotatedClasses(
+                                        Account.class,
+                                        Person.class,
+                                        Individual.class,
+                                        Company.class)
                                 .buildMetadata()
                                 .buildSessionFactory();
                     } catch (Exception e) {
