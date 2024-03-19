@@ -1,13 +1,18 @@
 package ru.duckcoder.fintrack;
 
 import lombok.extern.log4j.Log4j2;
-import ru.duckcoder.fintrack.dao.AccountDAO;
-import ru.duckcoder.fintrack.dao.PersonDAO;
-import ru.duckcoder.fintrack.dao.extension.EntityDeleteById;
-import ru.duckcoder.fintrack.model.Account;
-import ru.duckcoder.fintrack.model.Company;
-import ru.duckcoder.fintrack.model.Individual;
-import ru.duckcoder.fintrack.model.Person;
+import ru.duckcoder.fintrack.dto.account.AccountCreateDTO;
+import ru.duckcoder.fintrack.dto.account.AccountDTO;
+import ru.duckcoder.fintrack.dto.account.AccountUpdateDTO;
+import ru.duckcoder.fintrack.dto.person.PersonDTO;
+import ru.duckcoder.fintrack.dto.person.individual.IndividualCreateDTO;
+import ru.duckcoder.fintrack.dto.person.individual.IndividualDTO;
+import ru.duckcoder.fintrack.dto.person.individual.IndividualUpdateDTO;
+import ru.duckcoder.fintrack.service.AccountService;
+import ru.duckcoder.fintrack.service.CompanyService;
+import ru.duckcoder.fintrack.service.IndividualService;
+import ru.duckcoder.fintrack.service.PersonService;
+import ru.duckcoder.nullable.Nullable;
 
 import java.util.List;
 
@@ -15,75 +20,44 @@ import java.util.List;
 public class Application {
     public static void main(String[] args) {
         log.info("Entry point reached.");
-        AccountDAO accountDAO = new AccountDAO(SessionHandler.getSessionFactory());
-        PersonDAO personDAO = new PersonDAO(SessionHandler.getSessionFactory());
 
-        Individual individual0 = Individual.builder()
-                .fullName("John Johnson")
-                .build();
-        Individual individual1 = Individual.builder()
-                .fullName("Sam Clinton")
-                .build();
-        Person person0 = Person.builder()
-                .personType(true)
-                .individual(individual0)
-                .build();
-        Person person1 = Person.builder()
-                .personType(true)
-                .individual(individual1)
-                .build();
-        Account account0 = Account.builder()
-                .username("user")
-                .password("qwerty")
-                .persons(person0)
-                .build();
+        AccountCreateDTO accountCreateDTO0 = new AccountCreateDTO("user", "password");
+        AccountCreateDTO accountCreateDTO1 = new AccountCreateDTO("lector", "12345");
 
-        Company company0 = Company.builder()
-                .shortName("Shop")
-                .build();
-        Company company1 = Company.builder()
-                .shortName("Bank")
-                .build();
-        Company company2 = Company.builder()
-                .shortName("School")
-                .build();
+        try (AccountService accountService = new AccountService();
+             PersonService personService = new PersonService();
+             IndividualService individualService = new IndividualService();
+             CompanyService companyService = new CompanyService()) {
+            AccountDTO accountDTO0 = accountService.create(accountCreateDTO0);
+            AccountDTO accountDTO1 = accountService.create(accountCreateDTO1);
+            AccountUpdateDTO accountUpdateDTO0 = new AccountUpdateDTO(Nullable.of("john"), null);
+            accountDTO0 = accountService.update(accountDTO0.getId(), accountUpdateDTO0);
 
-        List<Person> personList0 = List.of(
-                Person.builder()
-                        .personType(false)
-                        .company(company0)
-                        .build(),
-                Person.builder()
-                        .personType(false)
-                        .company(company1)
-                        .build(),
-                Person.builder()
-                        .personType(false)
-                        .company(company2)
-                        .build()
-        );
+            IndividualCreateDTO individualCreateDTO0 = new IndividualCreateDTO("Danil", "Kudrickiy");
+            IndividualCreateDTO individualCreateDTO1 = new IndividualCreateDTO(accountDTO0.getId(),"John", "Silver", "Paulson");
+            IndividualDTO individualDTO0 = individualService.create(individualCreateDTO0);
+            IndividualDTO individualDTO1 = individualService.create(individualCreateDTO1);
 
-        accountDAO.save(account0);
-        for (Person person : personList0)
-            personDAO.save(person);
+            List<AccountDTO> accountDTOs = accountService.read();
+            accountDTOs.forEach(log::debug);
 
-        accountDAO.findAll().forEach(log::debug);
-        personDAO.findAll().forEach(log::debug);
+            List<PersonDTO> personDTOS = personService.read();
+            personDTOS.forEach(log::debug);
 
-        personDAO.delete(personDAO.findById(account0.getPersons().get(0).getId()).orElseThrow());
+            IndividualUpdateDTO individualUpdateDTO0 = new IndividualUpdateDTO(Nullable.of(accountDTO1.getId()), null);
+            individualDTO0 = individualService.update(individualDTO0.getId(), individualUpdateDTO0);
 
-        Account tempAccount = accountDAO.findById(account0.getId()).orElseThrow();
-        person1.setAccount(tempAccount);
-        personDAO.save(person1);
+            personDTOS = personService.read();
+            personDTOS.forEach(log::debug);
 
-        accountDAO.findAll().forEach(log::debug);
-        personDAO.findAll().forEach(log::debug);
+            accountDTOs = accountService.read();
+            accountDTOs.forEach(log::debug);
 
-        personList0 = personDAO.findAll();
-        for (Person person :personList0)
-            ((EntityDeleteById<Long>) personDAO).deleteById(person.getId());
-
-        accountDAO.findAll().forEach(log::debug);
-        personDAO.findAll().forEach(log::debug);
+            accountService.delete(accountDTO0.getId());
+            accountDTOs = accountService.read();
+            accountDTOs.forEach(log::debug);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
     }
 }

@@ -1,4 +1,4 @@
-package ru.duckcoder.fintrack.dao.extension;
+package ru.duckcoder.fintrack.dao;
 
 @FunctionalInterface
 public interface EntityDeleteById<ID> {

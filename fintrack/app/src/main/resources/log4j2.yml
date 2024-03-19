@@ -34,6 +34,11 @@ Configuration:
         additivity: false
         AppenderRef:
           - ref: LogToConsole
+      - name: org.hibernate.SQL
+        level: debug
+        additivity: false
+        AppenderRef:
+          - ref: LogToRollingFile
     Root:
       level: error
       AppenderRef:

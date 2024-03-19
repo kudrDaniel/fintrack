@@ -6,8 +6,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 
@@ -19,6 +22,7 @@ import java.util.stream.Collectors;
 @Table(name = "accounts")
 @Getter
 @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Log4j2
 public class Account extends BaseEntity {
     @Column(
@@ -31,13 +35,12 @@ public class Account extends BaseEntity {
     @Column(name = "password",
             nullable = false,
             length = 2048)
+    @NotEmpty
     private String password;
     @OneToMany(cascade = CascadeType.ALL,
             fetch = FetchType.EAGER,
             mappedBy = "account")
     private List<Person> persons = new ArrayList<>();
-
-
 
     public static AccountBuilder builder() {
         log.debug("Instantiate " + AccountBuilder.class.getSimpleName());
@@ -64,23 +67,10 @@ public class Account extends BaseEntity {
             return this;
         }
 
-        public AccountBuilder persons(Person... persons) {
-            for (Person person : persons) {
-                person.setAccount(this.account);
-                this.account.getPersons().add(person);
-                log.debug("Add person with:" + person);
-            }
-            return this;
-        }
-
         public Account build() throws NullPointerException {
             if (this.account.getUsername() != null
-                    && this.account.getPassword() != null
-                    && !this.account.getPersons().isEmpty()) {
-                log.debug("Build account with:{"
-                        + "username:" + this.account.getUsername()
-                        + ",password:" + this.account.getPassword()
-                        + ",persons:[" + this.account.personsToString() + "]}");
+                    && this.account.getPassword() != null) {
+                log.debug("Build account with:" + this.account);
                 return this.account;
             }
             throw new NullPointerException();
