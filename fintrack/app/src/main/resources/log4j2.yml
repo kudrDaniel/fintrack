@@ -8,12 +8,24 @@ Configuration:
     Console:
       name: LogToConsole
       target: SYSTEM_OUT
+      LevelRangeFilter:
+        maxLevel: debug
       PatternLayout:
         pattern: "[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n"
+    File:
+      - name: TraceToFile
+        append: false
+        fileName: logs/trace.log
+        LevelRangeFilter:
+          maxLevel: trace
+        PatternLayout:
+          pattern: "[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n"
     RollingFile:
       - name: LogToRollingFile
         fileName: logs/logfile.log
         filePattern: "logs/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz"
+        LevelRangeFilter:
+          maxLevel: debug
         PatternLayout:
           pattern: "[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n"
         Policies:
@@ -24,21 +36,24 @@ Configuration:
   Loggers:
     Logger:
       - name: ru.duckcoder
-        level: debug
+        level: all
         additivity: false
         AppenderRef:
           - ref: LogToConsole
           - ref: LogToRollingFile
+          - ref: TraceToFile
       - name: org.hibernate
-        level: debug
-        additivity: false
-        AppenderRef:
-          - ref: LogToConsole
-      - name: org.hibernate.SQL
-        level: debug
+        level: all
         additivity: false
         AppenderRef:
           - ref: LogToRollingFile
+          - ref: TraceToFile
+      - name: org.hibernate.SQL
+        level: all
+        additivity: false
+        AppenderRef:
+          - ref: LogToRollingFile
+          - ref: TraceToFile
     Root:
       level: error
       AppenderRef:
