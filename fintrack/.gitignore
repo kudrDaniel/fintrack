@@ -9,3 +9,6 @@ build
 
 # Ignore development logs
 app/**/logs
+
+# Ignore embedded databases
+app/**/*.db
