@@ -1,17 +1,21 @@
 package ru.duckcoder.fintrack.service;
 
-import jakarta.persistence.*;
-import jakarta.transaction.Transactional;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
+import jakarta.persistence.PersistenceUnit;
+import jakarta.persistence.SynchronizationType;
+import ru.duckcoder.fintrack.dto.AbstractCreateDTO;
 import ru.duckcoder.fintrack.dto.AbstractDTO;
-import ru.duckcoder.fintrack.model.AbstractModel;
+import ru.duckcoder.fintrack.dto.AbstractUpdateDTO;
 
 import java.util.List;
 import java.util.Map;
 
 public abstract class AbstractService<
         D extends AbstractDTO,
-        DC extends AbstractDTO,
-        DU extends AbstractDTO,
+        CD extends AbstractCreateDTO,
+        UD extends AbstractUpdateDTO,
         ID> implements AutoCloseable {
     @PersistenceUnit
     private static volatile EntityManagerFactory entityManagerFactory;
@@ -26,27 +30,27 @@ public abstract class AbstractService<
 
     }
 
-    public EntityManager getEntityManager() {
+    protected EntityManager getEntityManager() {
         return entityManagerFactory.createEntityManager();
     }
 
-    public EntityManager getEntityManager(Map<?, ?> map) {
+    protected EntityManager getEntityManager(Map<?, ?> map) {
         return entityManagerFactory.createEntityManager(map);
     }
 
-    public EntityManager getEntityManager(SynchronizationType synchronizationType) {
+    protected EntityManager getEntityManager(SynchronizationType synchronizationType) {
         return entityManagerFactory.createEntityManager(synchronizationType);
     }
 
-    public EntityManager getEntityManager(SynchronizationType synchronizationType, Map<?, ?> map) {
+    protected EntityManager getEntityManager(SynchronizationType synchronizationType, Map<?, ?> map) {
         return entityManagerFactory.createEntityManager(synchronizationType, map);
     }
 
-    abstract D create(DC dto);
-    abstract List<D> read();
-    abstract D read(ID id);
-    abstract D update(ID id,DU dto);
-    abstract void delete(ID id);
+    protected abstract D create(CD dto);
+    protected abstract List<D> readAll();
+    protected abstract D read(ID id);
+    protected abstract D update(ID id, UD dto);
+    protected abstract void delete(ID id);
 
     @Override
     public void close() throws Exception {

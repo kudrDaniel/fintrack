@@ -1,13 +1,7 @@
 package ru.duckcoder.nullable;
 
-import com.google.common.base.Function;
-import com.google.common.base.Optional;
-import com.google.common.base.Supplier;
-
-import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 import java.io.Serializable;
-import java.util.Set;
 
 public class Nullable<T> implements Serializable {
     private T value;
@@ -35,17 +29,6 @@ public class Nullable<T> implements Serializable {
     }
 
     @Override
-    public boolean equals(Object object) {
-        if (this == object)
-            return true;
-        if (object instanceof Nullable<?>)
-            if (((Nullable<?>) object).get() != null)
-                if (this.value != null)
-                    return ((Nullable<?>) object).get().equals(this.value);
-        return false;
-    }
-
-    @Override
     public int hashCode() {
         return this.value == null
                 ? 0
@@ -53,9 +36,17 @@ public class Nullable<T> implements Serializable {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        return (obj instanceof Nullable<?>)
+                && this.isPresent()
+                && ((Nullable<?>) obj).isPresent()
+                && this.value.equals(((Nullable<?>) obj).get());
+    }
+
+    @Override
     public String toString() {
-        return this.value == null
-                ? null
-                : this.value.toString();
+        return new StringBuilder("value:").append(this.value).toString();
     }
 }

@@ -8,10 +8,10 @@ import ru.duckcoder.fintrack.dto.person.PersonDTO;
 import ru.duckcoder.fintrack.dto.person.individual.IndividualCreateDTO;
 import ru.duckcoder.fintrack.dto.person.individual.IndividualDTO;
 import ru.duckcoder.fintrack.dto.person.individual.IndividualUpdateDTO;
-import ru.duckcoder.fintrack.service.AccountService;
-import ru.duckcoder.fintrack.service.CompanyService;
-import ru.duckcoder.fintrack.service.IndividualService;
-import ru.duckcoder.fintrack.service.PersonService;
+import ru.duckcoder.fintrack.service.account.AccountService;
+import ru.duckcoder.fintrack.service.person.company.CompanyService;
+import ru.duckcoder.fintrack.service.person.individual.IndividualService;
+import ru.duckcoder.fintrack.service.person.PersonService;
 import ru.duckcoder.nullable.Nullable;
 
 import java.util.List;
@@ -38,23 +38,28 @@ public class Application {
             IndividualDTO individualDTO0 = individualService.create(individualCreateDTO0);
             IndividualDTO individualDTO1 = individualService.create(individualCreateDTO1);
 
-            List<AccountDTO> accountDTOs = accountService.read();
+            List<AccountDTO> accountDTOs = accountService.readAll();
             accountDTOs.forEach(log::debug);
 
-            List<PersonDTO> personDTOS = personService.read();
+            List<PersonDTO> personDTOS = personService.readAll();
             personDTOS.forEach(log::debug);
 
             IndividualUpdateDTO individualUpdateDTO0 = new IndividualUpdateDTO(Nullable.of(accountDTO1.getId()), null);
             individualDTO0 = individualService.update(individualDTO0.getId(), individualUpdateDTO0);
 
-            personDTOS = personService.read();
+            IndividualDTO copyOdIndividualDTO0 = individualService.read(individualDTO0.getId());
+
+            List<PersonDTO> personsByAccountDTOs = accountService.readAllPersons(accountDTO0.getId());
+            personsByAccountDTOs.forEach(log::debug);
+
+            personDTOS = personService.readAll();
             personDTOS.forEach(log::debug);
 
-            accountDTOs = accountService.read();
+            accountDTOs = accountService.readAll();
             accountDTOs.forEach(log::debug);
 
             accountService.delete(accountDTO0.getId());
-            accountDTOs = accountService.read();
+            accountDTOs = accountService.readAll();
             accountDTOs.forEach(log::debug);
         } catch (Exception e) {
             log.error(e.getMessage(), e);

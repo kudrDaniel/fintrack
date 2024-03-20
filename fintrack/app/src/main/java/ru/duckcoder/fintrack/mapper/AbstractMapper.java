@@ -1,36 +1,34 @@
 package ru.duckcoder.fintrack.mapper;
 
 import jakarta.persistence.EntityManager;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
-import ru.duckcoder.fintrack.dao.AbstractDAO;
+import ru.duckcoder.fintrack.dto.AbstractCreateDTO;
 import ru.duckcoder.fintrack.dto.AbstractDTO;
-import ru.duckcoder.fintrack.model.AbstractModel;
-import ru.duckcoder.fintrack.model.BaseEntity;
-import ru.duckcoder.fintrack.service.AbstractService;
+import ru.duckcoder.fintrack.dto.AbstractUpdateDTO;
+import ru.duckcoder.fintrack.model.AbstractEntity;
 
 @Log4j2
+@Getter(value = AccessLevel.PROTECTED)
 public abstract class AbstractMapper<
         D extends AbstractDTO,
-        DC extends AbstractDTO,
-        DU extends AbstractDTO,
-        M extends AbstractModel> {
-    abstract M map(DC dto);
-    abstract D map(M model);
-    abstract void update(DU dto, M model);
+        CD extends AbstractCreateDTO,
+        UD extends AbstractUpdateDTO,
+        E extends AbstractEntity> {
+    private final EntityManager entityManager;
 
-    protected <E extends BaseEntity> E toEntity(Long id, Class<E> entityClass, AbstractService service) {
-        E entity;
-        try (EntityManager entityManager = service.getEntityManager()) {
-            if (id != null) {
-                entity = entityManager.find(entityClass, id);
-                log.debug("Entity:" + entityClass.getSimpleName() + " set to:" + entity);
-                return entity;
-            }
-        } catch (Exception e) {
-            log.warn(e.getMessage(), e);
-        }
-        entity = null;
-        log.debug("Entity:" + entityClass.getSimpleName() + " by id:" + id + " not found");
-        return entity;
+    protected AbstractMapper(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+
+    abstract E map(CD dto);
+    abstract D map(E model);
+    abstract void update(UD dto, E model);
+
+    protected <TE extends AbstractEntity, ID> TE toEntity(Class<TE> entityClass, ID id) {
+        if (id == null)
+            return null;
+        return this.entityManager.find(entityClass, id);
     }
 }

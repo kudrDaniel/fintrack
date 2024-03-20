@@ -1,13 +1,13 @@
 package ru.duckcoder.fintrack.mapper;
 
+import jakarta.persistence.EntityManager;
 import lombok.extern.log4j.Log4j2;
 import ru.duckcoder.fintrack.dto.account.AccountDTO;
 import ru.duckcoder.fintrack.dto.person.individual.IndividualCreateDTO;
 import ru.duckcoder.fintrack.dto.person.individual.IndividualDTO;
 import ru.duckcoder.fintrack.dto.person.individual.IndividualUpdateDTO;
-import ru.duckcoder.fintrack.model.Account;
-import ru.duckcoder.fintrack.model.Individual;
-import ru.duckcoder.fintrack.service.AccountService;
+import ru.duckcoder.fintrack.model.account.Account;
+import ru.duckcoder.fintrack.model.person.individual.Individual;
 
 @Log4j2
 public class IndividualMapper extends PersonMapper<
@@ -15,37 +15,32 @@ public class IndividualMapper extends PersonMapper<
         IndividualCreateDTO,
         IndividualUpdateDTO,
         Individual> {
+    public IndividualMapper(EntityManager entityManager) {
+        super(entityManager);
+    }
+
     @Override
     public Individual map(IndividualCreateDTO dto) {
-        Account accountModel = new AccountMapper().toEntity(dto.getAccountId(), Account.class, AccountService.getInstance());
-        return Individual.builder()
-                .account(accountModel)
-                .fullName(dto.getFirstName(), dto.getLastName(), dto.getFatherName())
-                .build();
+        Account accountModel = this.toEntity(Account.class, dto.getAccountId());
+        Individual individualModel = new Individual();
+        individualModel.setAccount(accountModel);
+        individualModel.setFirstName(dto.getFirstName());
+        individualModel.setLastName(dto.getLastName());
+        individualModel.setFatherName(dto.getFatherName());
+        return individualModel;
     }
 
     @Override
     public IndividualDTO map(Individual model) {
-        AccountDTO accountDTO = new AccountMapper().map(model.getAccount());
+        AccountDTO accountDTO = null;
+        if (model.getAccount() != null)
+            accountDTO = new AccountMapper(this.getEntityManager()).map(model.getAccount());
         return new IndividualDTO(model.getId(), accountDTO, model.getLabel(), model.getFirstName(), model.getLastName(), model.getFatherName());
     }
 
     @Override
     public void update(IndividualUpdateDTO dto, Individual model) {
-        if (dto.getAccountId() != null) {
-            if (dto.getAccountId().isPresent()) {
-                Account newAccountModel = new AccountMapper().toEntity(dto.getAccountId().get(), Account.class, AccountService.getInstance());
-                if (newAccountModel != null) {
-                    model.setAccount(newAccountModel);
-                    log.debug("Account set to:" + newAccountModel);
-                } else
-                    log.debug("Account unchanged");
-            } else {
-                model.setAccount(null);
-                log.debug("Account unset");
-            }
-        } else
-            log.debug("Account unchanged");
+        super.update(dto, model);
         if (dto.getLastName() != null) {
             if (dto.getLastName().isPresent()) {
                 String newLastName = dto.getLastName().get();
