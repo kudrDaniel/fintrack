@@ -14,7 +14,7 @@
     <groupId>ru.duckcoder.fintrack.frontend</groupId>
     <artifactId>desktop</artifactId>
     <packaging>jar</packaging>
-    <name>Desktop implementation</name>
+    <name>Frontend Desktop Impl module</name>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -31,7 +31,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>${javafx.maven.plugin.version}</version>
                 <configuration>
-                    <mainClass>${project.groupId}.${project.artifactId}.ApplicationFX</mainClass>
+                    <mainClass>${project.groupId}.${project.artifactId}.DesktopFrontend</mainClass>
                 </configuration>
             </plugin>
         </plugins>
