@@ -12,7 +12,7 @@
 
     <groupId>ru.duckcoder.fintrack</groupId>
     <artifactId>frontend</artifactId>
-    <name>Frontend API</name>
+    <name>Frontend API module</name>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
