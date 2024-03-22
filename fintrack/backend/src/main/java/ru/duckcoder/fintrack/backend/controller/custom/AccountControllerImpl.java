@@ -1,5 +1,6 @@
 package ru.duckcoder.fintrack.backend.controller.custom;
 
+import jakarta.servlet.annotation.WebServlet;
 import ru.duckcoder.fintrack.backend.config.DependencyProvider;
 import ru.duckcoder.fintrack.backend.controller.AccountController;
 import ru.duckcoder.fintrack.core.dto.account.AccountCreateDTO;
@@ -10,7 +11,11 @@ import ru.duckcoder.fintrack.backend.service.AccountService;
 
 import java.util.List;
 
-public final class AccountControllerDesk implements AccountController {
+@WebServlet(
+        name = "AccountController",
+        urlPatterns = "/api/accounts"
+)
+public final class AccountControllerImpl implements AccountController {
     private AccountService getService() {
         return DependencyProvider.getInstance().getImplementation(AccountService.class);
     }
