@@ -2,17 +2,17 @@ package ru.duckcoder.fintrack.launcher;
 
 import lombok.extern.log4j.Log4j2;
 import ru.duckcoder.fintrack.backend.Server;
-import ru.duckcoder.fintrack.frontend.desktop.DesktopFrontend;
+import ru.duckcoder.fintrack.desktop.Client;
 
 @Log4j2
 public class Launcher {
     public static void main(String[] args) {
         ThreadGroup application = new ThreadGroup(Thread.currentThread().getThreadGroup(), "Desktop Application");
 
+        Server server = new Server(args);
+        Thread backend = new Thread(application, server, "Server Thread");
 
-        Thread backend = new Thread(application, new Server(args),"Server");
-
-        Thread frontend = new Thread(application, new DesktopFrontend(args), "Client");
+        Thread frontend = new Thread(application, new Client(args), "Client Thread");
 
         try {
             backend.start();
@@ -21,13 +21,12 @@ public class Launcher {
             log.error(e);
         }
 
-        boolean isAlive = true;
-        while (isAlive) {
-            if (!frontend.isAlive()) {
-                log.debug(new StringBuilder().append(frontend.getName()).append(" is dead"));
-                backend.interrupt();
-                isAlive = false;
-            }
+        try {
+            frontend.join();
+            server.stop();
+            backend.join();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 }
