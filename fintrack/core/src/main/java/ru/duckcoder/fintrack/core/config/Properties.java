@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public enum Properties {
     FINTRACK_SERVER_DIR("commons//backend"),
-    FINTRACK_SERVER_PORT("8080");
+    FINTRACK_SERVER_PORT("8095");
 
     private final String def;
 
