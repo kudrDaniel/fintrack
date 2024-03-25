@@ -1,5 +1,7 @@
 package ru.duckcoder.fintrack.core.util;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.NonNull;
 
 import java.io.Serializable;
