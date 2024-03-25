@@ -8,13 +8,11 @@
         <groupId>ru.duckcoder</groupId>
         <artifactId>fintrack</artifactId>
         <version>1.0.0-SNAPSHOT</version>
-        <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <groupId>ru.duckcoder.fintrack.frontend</groupId>
+    <groupId>ru.duckcoder.fintrack</groupId>
     <artifactId>desktop</artifactId>
-    <packaging>jar</packaging>
-    <name>Frontend Desktop Impl module</name>
+    <name>Desktop module</name>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -31,7 +29,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>${javafx.maven.plugin.version}</version>
                 <configuration>
-                    <mainClass>${project.groupId}.${project.artifactId}.DesktopFrontend</mainClass>
+                    <mainClass>${project.groupId}.${project.artifactId}.Client</mainClass>
                 </configuration>
             </plugin>
         </plugins>
@@ -39,9 +37,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>ru.duckcoder.fintrack</groupId>
-            <artifactId>frontend</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <groupId>com.konghq</groupId>
+            <artifactId>unirest-java</artifactId>
+            <version>3.14.5</version>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
@@ -52,6 +50,11 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
             <version>17</version>
+        </dependency>
+        <dependency>
+            <groupId>ru.duckcoder.fintrack</groupId>
+            <artifactId>core</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
