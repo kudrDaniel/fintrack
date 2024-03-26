@@ -6,7 +6,7 @@
     <persistence-unit name="FinTrackService">
         <description>Persistence for application</description>
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-        <class>ru.duckcoder.fintrack.backend.model.account.Account</class>
+        <class>ru.duckcoder.fintrack.backend.model.user.User</class>
         <class>ru.duckcoder.fintrack.backend.model.person.Person</class>
         <class>ru.duckcoder.fintrack.backend.model.person.company.Company</class>
         <class>ru.duckcoder.fintrack.backend.model.person.individual.Individual</class>

@@ -2,11 +2,11 @@ package ru.duckcoder.fintrack.backend.mapper;
 
 import jakarta.persistence.EntityManager;
 import lombok.extern.log4j.Log4j2;
-import ru.duckcoder.fintrack.core.dto.account.AccountDTO;
+import ru.duckcoder.fintrack.core.dto.user.UserDTO;
 import ru.duckcoder.fintrack.core.dto.person.individual.IndividualCreateDTO;
 import ru.duckcoder.fintrack.core.dto.person.individual.IndividualDTO;
 import ru.duckcoder.fintrack.core.dto.person.individual.IndividualUpdateDTO;
-import ru.duckcoder.fintrack.backend.model.account.Account;
+import ru.duckcoder.fintrack.backend.model.user.User;
 import ru.duckcoder.fintrack.backend.model.person.individual.Individual;
 
 @Log4j2
@@ -21,9 +21,9 @@ public class IndividualMapper extends PersonMapper<
 
     @Override
     public Individual map(IndividualCreateDTO dto) {
-        Account accountModel = this.toEntity(Account.class, dto.getAccountId());
+        User userModel = this.toEntity(User.class, dto.getAccountId());
         Individual individualModel = new Individual();
-        individualModel.setAccount(accountModel);
+        individualModel.setUser(userModel);
         individualModel.setFirstName(dto.getFirstName());
         individualModel.setLastName(dto.getLastName());
         individualModel.setFatherName(dto.getFatherName());
@@ -32,10 +32,10 @@ public class IndividualMapper extends PersonMapper<
 
     @Override
     public IndividualDTO map(Individual model) {
-        AccountDTO accountDTO = null;
-        if (model.getAccount() != null)
-            accountDTO = new AccountMapper(this.getEntityManager()).map(model.getAccount());
-        return new IndividualDTO(model.getId(), accountDTO, model.getLabel(), model.getFirstName(), model.getLastName(), model.getFatherName());
+        UserDTO userDTO = null;
+        if (model.getUser() != null)
+            userDTO = new UserMapper(this.getEntityManager()).map(model.getUser());
+        return new IndividualDTO(model.getId(), userDTO, model.getLabel(), model.getFirstName(), model.getLastName(), model.getFatherName());
     }
 
     @Override

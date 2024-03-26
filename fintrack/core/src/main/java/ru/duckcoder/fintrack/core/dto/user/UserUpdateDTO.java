@@ -1,19 +1,18 @@
-package ru.duckcoder.fintrack.core.dto.account;
+package ru.duckcoder.fintrack.core.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import ru.duckcoder.fintrack.core.dto.AbstractUpdateDTO;
 import ru.duckcoder.fintrack.core.util.Nullable;
 
 @Getter
-public class AccountUpdateDTO extends AbstractUpdateDTO {
+public class UserUpdateDTO extends AbstractUpdateDTO {
     private final Nullable<String> username;
     private final Nullable<String> password;
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-    public AccountUpdateDTO(@JsonProperty("username") String username, @JsonProperty("password") String password) {
+    public UserUpdateDTO(@JsonProperty("username") String username, @JsonProperty("password") String password) {
         if (username == null)
             this.username = null;
         else if (username.equals("null"))

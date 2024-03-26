@@ -1,4 +1,4 @@
-package ru.duckcoder.fintrack.backend.model.account;
+package ru.duckcoder.fintrack.backend.model.user;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -22,7 +22,7 @@ import java.util.List;
 @Getter
 @Setter
 @Log4j2
-public class Account extends AbstractEntity {
+public class User extends AbstractEntity {
     @Column(name = "username",
             unique = true,
             nullable = false,
@@ -36,7 +36,7 @@ public class Account extends AbstractEntity {
     private String password;
     @OneToMany(cascade = CascadeType.MERGE,
             fetch = FetchType.EAGER,
-            mappedBy = "account")
+            mappedBy = "user")
     private List<Person> persons = new ArrayList<>();
 
     @Override
@@ -52,10 +52,10 @@ public class Account extends AbstractEntity {
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-        return (obj instanceof Account)
-                && this.id == ((Account) obj).id
-                && this.username.equals(((Account) obj).username)
-                && this.password.equals(((Account) obj).password);
+        return (obj instanceof User)
+                && this.id == ((User) obj).id
+                && this.username.equals(((User) obj).username)
+                && this.password.equals(((User) obj).password);
     }
 
     @Override

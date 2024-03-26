@@ -13,7 +13,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 import ru.duckcoder.fintrack.backend.model.AbstractEntity;
-import ru.duckcoder.fintrack.backend.model.account.Account;
+import ru.duckcoder.fintrack.backend.model.user.User;
 
 @Entity
 @Table(name = "persons")
@@ -24,8 +24,8 @@ import ru.duckcoder.fintrack.backend.model.account.Account;
 public abstract class Person extends AbstractEntity {
     @ManyToOne(cascade = CascadeType.MERGE,
             fetch = FetchType.EAGER)
-    @JoinColumn(name = "account_id")
-    protected Account account;
+    @JoinColumn(name = "user_id")
+    protected User user;
     @Column(name = "label",
             nullable = false,
             length = 128)
@@ -37,7 +37,7 @@ public abstract class Person extends AbstractEntity {
     public int hashCode() {
         return new StringBuilder()
                 .append(super.toString())
-                .append(this.account == null ? "null" : this.account.hashCode())
+                .append(this.user == null ? "null" : this.user.hashCode())
                 .append(this.label)
                 .hashCode();
     }
@@ -48,7 +48,7 @@ public abstract class Person extends AbstractEntity {
             return true;
         return (obj instanceof Person)
                 && this.id == ((Person) obj).id
-                && this.account.equals(((Person) obj).account)
+                && this.user.equals(((Person) obj).user)
                 && this.label.equals(((Person) obj).label);
     }
 
@@ -56,7 +56,7 @@ public abstract class Person extends AbstractEntity {
     public String toString() {
         return new StringBuilder()
                 .append(super.toString())
-                .append(",account:{").append(this.account).append('}')
+                .append(",user:{").append(this.user).append('}')
                 .append(",label:").append(this.label)
                 .toString();
     }

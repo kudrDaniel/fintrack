@@ -2,11 +2,11 @@ package ru.duckcoder.fintrack.backend.mapper;
 
 import jakarta.persistence.EntityManager;
 import lombok.extern.log4j.Log4j2;
-import ru.duckcoder.fintrack.core.dto.account.AccountDTO;
+import ru.duckcoder.fintrack.core.dto.user.UserDTO;
 import ru.duckcoder.fintrack.core.dto.person.company.CompanyCreateDTO;
 import ru.duckcoder.fintrack.core.dto.person.company.CompanyDTO;
 import ru.duckcoder.fintrack.core.dto.person.company.CompanyUpdateDTO;
-import ru.duckcoder.fintrack.backend.model.account.Account;
+import ru.duckcoder.fintrack.backend.model.user.User;
 import ru.duckcoder.fintrack.backend.model.person.company.Company;
 
 @Log4j2
@@ -21,9 +21,9 @@ public class CompanyMapper extends PersonMapper<
 
     @Override
     public Company map(CompanyCreateDTO dto) {
-        Account accountModel = this.toEntity(Account.class, dto.getAccountId());
+        User userModel = this.toEntity(User.class, dto.getAccountId());
         Company companyModel = new Company();
-        companyModel.setAccount(accountModel);
+        companyModel.setUser(userModel);
         companyModel.setCompanyType(dto.getCompanyType());
         companyModel.setCompanyName(dto.getCompanyName());
         return companyModel;
@@ -31,10 +31,10 @@ public class CompanyMapper extends PersonMapper<
 
     @Override
     public CompanyDTO map(Company model) {
-        AccountDTO accountDTO = null;
-        if (model.getAccount() != null)
-            accountDTO = new AccountMapper(this.getEntityManager()).map(model.getAccount());
-        return new CompanyDTO(model.getId(), accountDTO, model.getLabel(), model.getCompanyType(), model.getCompanyName());
+        UserDTO userDTO = null;
+        if (model.getUser() != null)
+            userDTO = new UserMapper(this.getEntityManager()).map(model.getUser());
+        return new CompanyDTO(model.getId(), userDTO, model.getLabel(), model.getCompanyType(), model.getCompanyName());
     }
 
     @Override

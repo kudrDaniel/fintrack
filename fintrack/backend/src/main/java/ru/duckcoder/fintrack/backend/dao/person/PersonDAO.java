@@ -48,7 +48,7 @@ public class PersonDAO extends AbstractDAO<Person, Long> implements EntityDelete
 
     @Override
     public void delete(Person entity) {
-        entity.setAccount(null);
+        entity.setUser(null);
         this.getEntityManager().remove(entity);
     }
 

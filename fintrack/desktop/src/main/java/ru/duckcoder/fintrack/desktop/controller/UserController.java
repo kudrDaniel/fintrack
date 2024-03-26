@@ -1,27 +1,25 @@
 package ru.duckcoder.fintrack.desktop.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.javafx.collections.ImmutableObservableList;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.FocusModel;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
 import lombok.extern.log4j.Log4j2;
-import ru.duckcoder.fintrack.core.dto.account.AccountDTO;
+import ru.duckcoder.fintrack.core.dto.user.UserDTO;
 
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Log4j2
-public class AccountController {
+public class UserController {
     @FXML
     private Button readAllButton;
 
@@ -44,12 +42,12 @@ public class AccountController {
 
     @FXML
     private void onReadAllButtonClick(ActionEvent event) {
-        HttpResponse<String> response = Unirest.get("http://localhost:8095/api/accounts")
+        HttpResponse<String> response = Unirest.get("http://localhost:8095/api/v1/users")
                 .accept("application/json")
                 .asString();
         try {
-            AccountDTO[] accounts = om.readValue(response.getBody(), AccountDTO[].class);
-            accountsList.setItems(FXCollections.observableList(Arrays.stream(accounts).map(AccountDTO::toString).toList()));
+            UserDTO[] accounts = om.readValue(response.getBody(), UserDTO[].class);
+            accountsList.setItems(FXCollections.observableList(Arrays.stream(accounts).map(UserDTO::toString).toList()));
         } catch (Exception e) {
             log.error(e);
         }
@@ -65,12 +63,12 @@ public class AccountController {
         );
 
         try {
-            HttpResponse<String> response = Unirest.post("http://localhost:8095/api/accounts/new")
+            HttpResponse<String> response = Unirest.post("http://localhost:8095/api/v1/users/new")
                     .accept("application/json")
                     .body(om.writeValueAsString(body))
                     .asString();
             List<String> mutableList = new ArrayList<>(accountsList.getItems());
-            mutableList.add(om.readValue(response.getBody(), AccountDTO.class).toString());
+            mutableList.add(om.readValue(response.getBody(), UserDTO.class).toString());
             accountsList.setItems(FXCollections.observableList(mutableList));
         } catch (Exception e) {
             log.error(e);
@@ -87,13 +85,13 @@ public class AccountController {
         int id = accountsList.getFocusModel().getFocusedIndex();
 
         try {
-            HttpResponse<String> response = Unirest.put("http://localhost:8095/api/accounts/" + (id + 1))
+            HttpResponse<String> response = Unirest.put("http://localhost:8095/api/v1/users/" + (id + 1))
                     .accept("application/json")
                     .body(om.writeValueAsString(body))
                     .asString();
             List<String> mutableList = new ArrayList<>(accountsList.getItems());
             mutableList.remove(id);
-            mutableList.add(id, om.readValue(response.getBody(), AccountDTO.class).toString());
+            mutableList.add(id, om.readValue(response.getBody(), UserDTO.class).toString());
             accountsList.getItems().remove(id);
             accountsList.setItems(FXCollections.observableList(mutableList));
         } catch (Exception e) {

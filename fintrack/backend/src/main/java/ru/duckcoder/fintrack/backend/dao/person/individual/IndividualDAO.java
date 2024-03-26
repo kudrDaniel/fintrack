@@ -48,7 +48,7 @@ public class IndividualDAO extends AbstractDAO<Individual, Long> implements Enti
 
     @Override
     public void delete(Individual entity) {
-        entity.setAccount(null);
+        entity.setUser(null);
         this.getEntityManager().remove(entity);
     }
 

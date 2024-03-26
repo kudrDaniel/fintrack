@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+
+<SplitPane dividerPositions="0.25" prefHeight="320.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.duckcoder.fintrack.desktop.controller.UserController">
+  <items>
+    <AnchorPane minHeight="0.0" prefHeight="160.0" prefWidth="100.0">
+         <children>
+            <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+               <children>
+                  <Button fx:id="addButton" maxWidth="1.7976931348623157E308" minWidth="-Infinity" mnemonicParsing="false" onAction="#onAddButtonClick" prefHeight="25.0" prefWidth="100.0" text="Add">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </Button>
+                  <Button fx:id="updateButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onUpdateButtonClick" prefHeight="25.0" prefWidth="89.0" text="Update">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </Button>
+                  <Button fx:id="readAllButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onReadAllButtonClick" prefHeight="25.0" prefWidth="89.0" text="Refresh">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </Button>
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </VBox>
+         </children>
+      </AnchorPane>
+    <AnchorPane minHeight="0.0" prefHeight="158.0" prefWidth="243.0">
+         <children>
+            <SplitPane dividerPositions="0.4794520547945205" orientation="VERTICAL" prefHeight="148.0" prefWidth="342.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+              <items>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="55.0" prefWidth="534.0">
+                     <children>
+                        <VBox spacing="10.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                           <children>
+                              <HBox>
+                                 <children>
+                                    <Label prefHeight="17.0" prefWidth="80.0" text="Username" />
+                                    <TextField fx:id="username" prefHeight="25.0" prefWidth="314.0" />
+                                 </children>
+                              </HBox>
+                              <HBox>
+                                 <children>
+                                    <Label prefHeight="17.0" prefWidth="80.0" text="Password" />
+                                    <TextField fx:id="password" prefHeight="25.0" prefWidth="314.0" />
+                                 </children>
+                              </HBox>
+                           </children>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                     <children>
+                        <ListView fx:id="accountsList" prefHeight="285.0" prefWidth="400.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                     </children>
+                  </AnchorPane>
+              </items>
+            </SplitPane>
+         </children>
+      </AnchorPane>
+  </items>
+</SplitPane>

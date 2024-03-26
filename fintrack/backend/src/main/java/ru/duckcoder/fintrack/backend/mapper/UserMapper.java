@@ -2,36 +2,36 @@ package ru.duckcoder.fintrack.backend.mapper;
 
 import jakarta.persistence.EntityManager;
 import lombok.extern.log4j.Log4j2;
-import ru.duckcoder.fintrack.core.dto.account.AccountCreateDTO;
-import ru.duckcoder.fintrack.core.dto.account.AccountDTO;
-import ru.duckcoder.fintrack.core.dto.account.AccountUpdateDTO;
-import ru.duckcoder.fintrack.backend.model.account.Account;
+import ru.duckcoder.fintrack.core.dto.user.UserCreateDTO;
+import ru.duckcoder.fintrack.core.dto.user.UserDTO;
+import ru.duckcoder.fintrack.core.dto.user.UserUpdateDTO;
+import ru.duckcoder.fintrack.backend.model.user.User;
 
 @Log4j2
-public class AccountMapper extends AbstractMapper<
-        AccountDTO,
-        AccountCreateDTO,
-        AccountUpdateDTO,
-        Account> {
-    public AccountMapper(EntityManager entityManager) {
+public class UserMapper extends AbstractMapper<
+        UserDTO,
+        UserCreateDTO,
+        UserUpdateDTO,
+        User> {
+    public UserMapper(EntityManager entityManager) {
         super(entityManager);
     }
 
     @Override
-    public Account map(AccountCreateDTO dto) {
-        Account model = new Account();
+    public User map(UserCreateDTO dto) {
+        User model = new User();
         model.setUsername(dto.getUsername());
         model.setPassword(dto.getPassword());
         return model;
     }
 
     @Override
-    public AccountDTO map(Account model) {
-        return new AccountDTO(model.getId(), model.getUsername());
+    public UserDTO map(User model) {
+        return new UserDTO(model.getId(), model.getUsername());
     }
 
     @Override
-    public void update(AccountUpdateDTO dto, Account model) {
+    public void update(UserUpdateDTO dto, User model) {
         if (dto.getUsername() != null) {
             String newUsername;
             if (dto.getUsername().isPresent())

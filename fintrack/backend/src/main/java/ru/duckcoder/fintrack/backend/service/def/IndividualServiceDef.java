@@ -1,40 +1,40 @@
-package ru.duckcoder.fintrack.backend.service.desktop;
+package ru.duckcoder.fintrack.backend.service.def;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.PersistenceContext;
 import lombok.extern.log4j.Log4j2;
 import ru.duckcoder.fintrack.backend.config.EntityManagerProvider;
-import ru.duckcoder.fintrack.backend.dao.person.company.CompanyDAO;
-import ru.duckcoder.fintrack.core.dto.person.company.CompanyCreateDTO;
-import ru.duckcoder.fintrack.core.dto.person.company.CompanyDTO;
-import ru.duckcoder.fintrack.core.dto.person.company.CompanyUpdateDTO;
-import ru.duckcoder.fintrack.backend.mapper.CompanyMapper;
-import ru.duckcoder.fintrack.backend.model.person.company.Company;
-import ru.duckcoder.fintrack.backend.service.CompanyService;
+import ru.duckcoder.fintrack.backend.dao.person.individual.IndividualDAO;
+import ru.duckcoder.fintrack.core.dto.person.individual.IndividualCreateDTO;
+import ru.duckcoder.fintrack.core.dto.person.individual.IndividualDTO;
+import ru.duckcoder.fintrack.core.dto.person.individual.IndividualUpdateDTO;
+import ru.duckcoder.fintrack.backend.mapper.IndividualMapper;
+import ru.duckcoder.fintrack.backend.model.person.individual.Individual;
+import ru.duckcoder.fintrack.backend.service.IndividualService;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 
 @Log4j2
-public class CompanyServiceDesk implements CompanyService {
+public class IndividualServiceDef implements IndividualService {
     @PersistenceContext
-    private EntityManager entityManager;
-    private final CompanyDAO dao;
-    private final CompanyMapper mapper;
+    private  EntityManager entityManager;
+    private final IndividualDAO dao;
+    private final IndividualMapper mapper;
 
-    public CompanyServiceDesk() {
+    private IndividualServiceDef() {
         this.entityManager = EntityManagerProvider.getInstance().getEntityManager();
-        this.dao = new CompanyDAO(this.entityManager);
-        this.mapper = new CompanyMapper(this.entityManager);
+        this.dao = new IndividualDAO(this.entityManager);
+        this.mapper = new IndividualMapper(this.entityManager);
     }
 
     @Override
-    public CompanyDTO create(CompanyCreateDTO dto) {
+    public IndividualDTO create(IndividualCreateDTO dto) {
         EntityTransaction transaction = this.entityManager.getTransaction();
         try {
             transaction.begin();
-            Company model = this.mapper.map(dto);
+            Individual model = this.mapper.map(dto);
             model = this.dao.save(model);
             transaction.commit();
             return this.mapper.map(model);
@@ -45,9 +45,9 @@ public class CompanyServiceDesk implements CompanyService {
     }
 
     @Override
-    public List<CompanyDTO> readAll() {
+    public List<IndividualDTO> readAll() {
         try {
-            List<Company> models = this.dao.findAll();
+            List<Individual> models = this.dao.findAll();
             return models.stream()
                     .map(this.mapper::map)
                     .toList();
@@ -57,9 +57,9 @@ public class CompanyServiceDesk implements CompanyService {
     }
 
     @Override
-    public CompanyDTO read(Long id) {
+    public IndividualDTO read(Long id) {
         try {
-            Company model = this.dao.findById(id).orElseThrow(() -> new NoSuchElementException("Company with id:" + id + " not found"));
+            Individual model = this.dao.findById(id).orElseThrow(() -> new NoSuchElementException("Individual with id:" + id + " not found"));
             return this.mapper.map(model);
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -67,15 +67,15 @@ public class CompanyServiceDesk implements CompanyService {
     }
 
     @Override
-    public CompanyDTO update(Long id, CompanyUpdateDTO dto) {
+    public IndividualDTO update(Long id, IndividualUpdateDTO dto) {
         EntityTransaction transaction = this.entityManager.getTransaction();
         try {
             transaction.begin();
-            Company model = this.dao.findById(id).orElseThrow(() -> new NoSuchElementException("Company with id:" + id + " not found"));
-            this.mapper.update(dto, model);
-            model = this.dao.save(model);
+            Individual individualModel = this.dao.findById(id).orElseThrow(() -> new NoSuchElementException("Individual with id:" + id + " not found"));
+            this.mapper.update(dto, individualModel);
+            individualModel = this.dao.save(individualModel);
             transaction.commit();
-            return this.mapper.map(model);
+            return this.mapper.map(individualModel);
         } catch (Exception e) {
             transaction.rollback();
             throw new RuntimeException(e);

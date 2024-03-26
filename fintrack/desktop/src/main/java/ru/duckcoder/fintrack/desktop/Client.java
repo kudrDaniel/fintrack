@@ -2,9 +2,8 @@ package ru.duckcoder.fintrack.desktop;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -23,11 +22,12 @@ public class Client extends Application implements Runnable {
 
     @Override
     public void start(Stage stage) throws Exception {
-        URL fxmlPath = Client.class.getClassLoader().getResource("fxml/accountView.fxml");
-        VBox box = FXMLLoader.load(fxmlPath);
+        URL fxmlPath = Client.class.getClassLoader().getResource("fxml/userView.fxml");
+        Parent parent = FXMLLoader.load(fxmlPath);
 
-        Scene scene = new Scene(box);
+        Scene scene = new Scene(parent);
         stage.setScene(scene);
+        stage.setTitle("Users");
         stage.show();
     }
 

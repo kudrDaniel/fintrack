@@ -63,7 +63,7 @@ public class Company extends Person {
             return true;
         return (obj instanceof Company)
                 && this.id == ((Company) obj).id
-                && this.account.equals(((Company) obj).account)
+                && this.user.equals(((Company) obj).user)
                 && this.label.equals(((Company) obj).label)
                 && this.companyType.equals(((Company) obj).companyType)
                 && this.companyName.equals(((Company) obj).companyName);

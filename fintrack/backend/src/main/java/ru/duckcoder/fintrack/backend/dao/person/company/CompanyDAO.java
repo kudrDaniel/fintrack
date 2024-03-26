@@ -44,7 +44,7 @@ public class CompanyDAO extends AbstractDAO<Company, Long> implements EntityDele
 
     @Override
     public void delete(Company entity) {
-        entity.setAccount(null);
+        entity.setUser(null);
         this.getEntityManager().remove(entity);
     }
 

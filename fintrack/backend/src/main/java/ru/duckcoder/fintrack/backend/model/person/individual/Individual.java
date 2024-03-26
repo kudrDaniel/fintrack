@@ -70,7 +70,7 @@ public class Individual extends Person {
             return true;
         return (obj instanceof Individual)
                 && this.id == ((Individual) obj).id
-                && this.account.equals(((Individual) obj).account)
+                && this.user.equals(((Individual) obj).user)
                 && this.label.equals(((Individual) obj).label)
                 && this.firstName.equals(((Individual) obj).firstName)
                 && this.lastName.equals(((Individual) obj).lastName)

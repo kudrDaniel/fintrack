@@ -1,8 +1,12 @@
 package ru.duckcoder.fintrack.backend;
+
 import io.javalin.Javalin;
 import lombok.extern.log4j.Log4j2;
 import ru.duckcoder.fintrack.backend.config.EntityManagerProvider;
-import ru.duckcoder.fintrack.backend.controller.custom.AccountControllerImpl;
+import ru.duckcoder.fintrack.backend.controller.api.v1.def.users.UserControllerDef;
+import ru.duckcoder.fintrack.backend.controller.api.v1.def.persons.PersonControllerDef;
+import ru.duckcoder.fintrack.backend.controller.api.v1.def.persons.companies.CompanyControllerDef;
+import ru.duckcoder.fintrack.backend.controller.api.v1.def.persons.individuals.IndividualControllerDef;
 
 import java.util.Arrays;
 
@@ -39,8 +43,14 @@ public class Server implements Runnable {
                     this.stop();
                 });
 
-        AccountControllerImpl accountController = new AccountControllerImpl();
+        UserControllerDef accountController = new UserControllerDef();
+        PersonControllerDef personController = new PersonControllerDef();
+        CompanyControllerDef companyController = new CompanyControllerDef();
+        IndividualControllerDef individualController = new IndividualControllerDef();
         accountController.route(javalin);
+        personController.route(javalin);
+        companyController.route(javalin);
+        individualController.route(javalin);
 
         return javalin;
     }

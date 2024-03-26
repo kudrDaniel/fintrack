@@ -2,8 +2,15 @@ package ru.duckcoder.fintrack.backend.config;
 
 import jakarta.persistence.EntityManager;
 import lombok.extern.log4j.Log4j2;
-import ru.duckcoder.fintrack.backend.service.AccountService;
-import ru.duckcoder.fintrack.backend.service.desktop.AccountServiceDesk;
+import ru.duckcoder.fintrack.backend.service.UserService;
+import ru.duckcoder.fintrack.backend.service.CompanyService;
+import ru.duckcoder.fintrack.backend.service.IndividualService;
+import ru.duckcoder.fintrack.backend.service.PersonService;
+import ru.duckcoder.fintrack.backend.service.def.UserServiceDef;
+import ru.duckcoder.fintrack.backend.service.def.CompanyServiceDef;
+import ru.duckcoder.fintrack.backend.service.def.IndividualServiceDef;
+import ru.duckcoder.fintrack.backend.service.def.PersonServiceDef;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,7 +33,10 @@ public class DependencyProvider {
 
     private DependencyProvider() {
         this.classMap = new HashMap<>();
-        this.addImplementation(AccountService.class, AccountServiceDesk.class);
+        this.addImplementation(UserService.class, UserServiceDef.class);
+        this.addImplementation(PersonService.class, PersonServiceDef.class);
+        this.addImplementation(CompanyService.class, CompanyServiceDef.class);
+        this.addImplementation(IndividualService.class, IndividualServiceDef.class);
     }
 
     private <T> T castWithCheck(Object obj, Class<T> tClass) {
